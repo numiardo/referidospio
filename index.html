@@ -466,23 +466,23 @@
                 <form id="referreeForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="referreeName">Nombre</label>
-                            <input type="text" id="referreeName" name="referreeName">
+                            <label for="referreeName">Nombre <span class="required-asterisk">*</span></label>
+                            <input type="text" id="referreeName" name="referreeName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreeLastName">Apellidos <span class="required-asterisk">*</span></label>
+                            <input type="text" id="referreeLastName" name="referreeLastName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreeEmail">Email <span class="required-asterisk">*</span></label>
+                            <input type="email" id="referreeEmail" name="referreeEmail" required>
                             <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group">
-                            <label for="referreeLastName">Apellidos</label>
-                            <input type="text" id="referreeLastName" name="referreeLastName">
-                            <span class="error-message">Ingresa un email válido</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referreeEmail">Email</label>
-                            <input type="email" id="referreeEmail" name="referreeEmail">
-                            <span class="error-message">Ingresa un email válido</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referreePhone">Celular <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
-                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric">
+                            <label for="referreePhone">Celular <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
+                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric" required>
                             <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
                         </div>
                     </div>
@@ -495,28 +495,28 @@
                 <form id="referrerForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="referrerName">Nombre</label>
-                            <input type="text" id="referrerName" name="referrerName">
-                            <span class="error-message">Ingresa un email válido</span>
+                            <label for="referrerName">Nombre <span class="required-asterisk">*</span></label>
+                            <input type="text" id="referrerName" name="referrerName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerLastName">Apellidos</label>
-                            <input type="text" id="referrerLastName" name="referrerLastName">
-                            <span class="error-message">Ingresa un email válido</span>
+                            <label for="referrerLastName">Apellidos <span class="required-asterisk">*</span></label>
+                            <input type="text" id="referrerLastName" name="referrerLastName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerClientNumber">Número de Socio <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(11 dígitos)</span></label>
-                            <input type="text" id="referrerClientNumber" name="referrerClientNumber" required pattern="[0-9]*" inputmode="numeric">
+                            <label for="referrerClientNumber">Número de Socio <span style="font-size: 12px; color: #666; font-weight: normal;">(11 dígitos)</span></label>
+                            <input type="text" id="referrerClientNumber" name="referrerClientNumber" pattern="[0-9]*" inputmode="numeric">
                             <span class="error-message">El número de socio debe tener exactamente 11 dígitos y no puede ser un número consecutivo</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerPhone">Celular <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
-                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric">
+                            <label for="referrerPhone">Celular <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
+                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric" required>
                             <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
                         </div>
                         <div class="form-group full-width">
-                            <label for="referrerEmail">Email</label>
-                            <input type="email" id="referrerEmail" name="referrerEmail">
+                            <label for="referrerEmail">Email <span class="required-asterisk">*</span></label>
+                            <input type="email" id="referrerEmail" name="referrerEmail" required>
                             <span class="error-message">Ingresa un email válido</span>
                         </div>
                     </div>
@@ -609,8 +609,11 @@
         }
 
         // Validar celular (10 dígitos, no consecutivos)
-        function validatePhone(phone) {
+        function validatePhone(phone, isRequired = true) {
             if (!phone || phone.trim() === '') {
+                if (isRequired) {
+                    return { isValid: false, message: 'Este campo es obligatorio' };
+                }
                 return { isValid: true, message: '' }; // Opcional, no validar si está vacío
             }
             
@@ -637,7 +640,7 @@
         // Validar número de socio (11 dígitos, no consecutivos)
         function validateClientNumber(clientNumber) {
             if (!clientNumber || clientNumber.trim() === '') {
-                return { isValid: false, message: 'Este campo es obligatorio' }; // Requerido
+                return { isValid: true, message: '' }; // Opcional, no validar si está vacío
             }
             
             const cleaned = clientNumber.replace(/\s|-|\(|\)/g, '');
@@ -669,15 +672,21 @@
 
             // Validar campos de teléfono
             if (field.type === 'tel') {
-                const phoneValidation = validatePhone(field.value);
+                const isRequired = field.hasAttribute('required');
+                const phoneValidation = validatePhone(field.value, isRequired);
                 isValid = phoneValidation.isValid;
                 errorMsg = phoneValidation.message;
             }
-            // Validar número de socio
+            // Validar número de socio (opcional)
             else if (field.id === 'referrerClientNumber') {
-                const clientValidation = validateClientNumber(field.value);
-                isValid = clientValidation.isValid;
-                errorMsg = clientValidation.message;
+                // Solo validar si tiene contenido (es opcional)
+                if (field.value.trim() !== '') {
+                    const clientValidation = validateClientNumber(field.value);
+                    isValid = clientValidation.isValid;
+                    errorMsg = clientValidation.message;
+                } else {
+                    isValid = true; // Campo vacío es válido porque es opcional
+                }
             }
             // Validar otros campos
             else {
@@ -767,31 +776,18 @@
 
         // Manejar el botón continuar
         function handleContinue() {
-            // Validar formularios (solo el número de socio es requerido)
+            // Validar formularios (todos los campos excepto número de socio son obligatorios)
             if (!validateForms()) {
-                alert('Por favor, completa el campo de Número de Socio correctamente.');
+                alert('Por favor, completa todos los campos obligatorios correctamente.');
                 return;
             }
 
-            // Obtener datos del referido (opcionales)
+            // Obtener datos del referido (obligatorios)
             const referreeName = document.getElementById('referreeName').value.trim();
-            const referreeLastName = document.getElementById('referreeLastName').value.trim();
             const referreePhone = document.getElementById('referreePhone').value.trim();
 
-            // Validar que al menos el nombre o teléfono del referido estén presentes
-            if (!referreeName && !referreePhone) {
-                alert('Por favor, ingresa al menos el nombre o el celular del referido para enviar el mensaje.');
-                return;
-            }
-
-            // Si no hay teléfono, no se puede enviar WhatsApp
-            if (!referreePhone) {
-                alert('Por favor, ingresa el celular del referido para enviar el mensaje por WhatsApp.');
-                return;
-            }
-
             // Validar formato del celular del referido
-            const phoneValidation = validatePhone(referreePhone);
+            const phoneValidation = validatePhone(referreePhone, true);
             if (!phoneValidation.isValid) {
                 alert('Por favor, corrige el celular del referido: ' + phoneValidation.message);
                 document.getElementById('referreePhone').focus();
