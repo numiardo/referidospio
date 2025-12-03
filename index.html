@@ -431,24 +431,24 @@
                 <form id="referreeForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="referreeName">Nombre *</label>
-                            <input type="text" id="referreeName" name="referreeName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referreeLastName">Apellidos *</label>
-                            <input type="text" id="referreeLastName" name="referreeLastName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referreeEmail">Email *</label>
-                            <input type="email" id="referreeEmail" name="referreeEmail" required>
+                            <label for="referreeName">Nombre</label>
+                            <input type="text" id="referreeName" name="referreeName">
                             <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group">
-                            <label for="referreePhone">Celular *</label>
-                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <label for="referreeLastName">Apellidos</label>
+                            <input type="text" id="referreeLastName" name="referreeLastName">
+                            <span class="error-message">Ingresa un email válido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreeEmail">Email</label>
+                            <input type="email" id="referreeEmail" name="referreeEmail">
+                            <span class="error-message">Ingresa un email válido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreePhone">Celular</label>
+                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396">
+                            <span class="error-message">Ingresa un email válido</span>
                         </div>
                     </div>
                 </form>
@@ -460,14 +460,14 @@
                 <form id="referrerForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="referrerName">Nombre *</label>
-                            <input type="text" id="referrerName" name="referrerName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <label for="referrerName">Nombre</label>
+                            <input type="text" id="referrerName" name="referrerName">
+                            <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerLastName">Apellidos *</label>
-                            <input type="text" id="referrerLastName" name="referrerLastName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <label for="referrerLastName">Apellidos</label>
+                            <input type="text" id="referrerLastName" name="referrerLastName">
+                            <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group">
                             <label for="referrerClientNumber">Número de Socio *</label>
@@ -475,13 +475,13 @@
                             <span class="error-message">Este campo es obligatorio</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerPhone">Celular *</label>
-                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <label for="referrerPhone">Celular</label>
+                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396">
+                            <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group full-width">
-                            <label for="referrerEmail">Email *</label>
-                            <input type="email" id="referrerEmail" name="referrerEmail" required>
+                            <label for="referrerEmail">Email</label>
+                            <input type="email" id="referrerEmail" name="referrerEmail">
                             <span class="error-message">Ingresa un email válido</span>
                         </div>
                     </div>
@@ -556,16 +556,30 @@
             const errorMessage = formGroup.querySelector('.error-message');
             let isValid = true;
 
-            // Validar campo vacío
-            if (field.value.trim() === '') {
-                isValid = false;
-            }
-
-            // Validar email
-            if (field.type === 'email' && field.value.trim() !== '') {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(field.value)) {
+            // Solo validar si el campo es requerido
+            if (!field.hasAttribute('required')) {
+                // Si no es requerido, solo validar formato si tiene contenido
+                if (field.value.trim() !== '') {
+                    // Validar email si tiene contenido
+                    if (field.type === 'email') {
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(field.value)) {
+                            isValid = false;
+                        }
+                    }
+                }
+            } else {
+                // Validar campo vacío si es requerido
+                if (field.value.trim() === '') {
                     isValid = false;
+                }
+
+                // Validar email si es requerido y tiene contenido
+                if (field.type === 'email' && field.value.trim() !== '') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(field.value)) {
+                        isValid = false;
+                    }
                 }
             }
 
@@ -619,24 +633,35 @@
 
         // Manejar el botón continuar
         function handleContinue() {
-            // Validar formularios
+            // Validar formularios (solo el número de socio es requerido)
             if (!validateForms()) {
-                alert('Por favor, completa todos los campos requeridos correctamente.');
+                alert('Por favor, completa el campo de Número de Socio.');
                 return;
             }
 
-            // Obtener datos del referido
+            // Obtener datos del referido (opcionales)
             const referreeName = document.getElementById('referreeName').value.trim();
             const referreeLastName = document.getElementById('referreeLastName').value.trim();
             const referreePhone = document.getElementById('referreePhone').value.trim();
-            const referrerPhone = document.getElementById('referrerPhone').value.trim();
+
+            // Validar que al menos el nombre o teléfono del referido estén presentes
+            if (!referreeName && !referreePhone) {
+                alert('Por favor, ingresa al menos el nombre o el celular del referido para enviar el mensaje.');
+                return;
+            }
+
+            // Si no hay teléfono, no se puede enviar WhatsApp
+            if (!referreePhone) {
+                alert('Por favor, ingresa el celular del referido para enviar el mensaje por WhatsApp.');
+                return;
+            }
 
             // Formatear número del referido
             const formattedReferreePhone = formatPhoneNumber(referreePhone);
             
-            // Crear mensaje personalizado
-            const fullReferreeName = `${referreeName} ${referreeLastName}`;
-            const message = `Hola ${referreeName}, te quiero invitar a abrir una cuenta con Caja Popular Pío, recibe una promoción exclusiva al registrar tu cita desde el siguiente enlace: ${APPOINTMENT_URL}`;
+            // Crear mensaje personalizado (usar nombre si está disponible, sino usar "amigo")
+            const nameToUse = referreeName || 'amigo';
+            const message = `Hola ${nameToUse}, te quiero invitar a abrir una cuenta con Caja Popular Pío, recibe una promoción exclusiva al registrar tu cita desde el siguiente enlace: ${APPOINTMENT_URL}`;
             
             // Codificar el mensaje para URL
             const encodedMessage = encodeURIComponent(message);
