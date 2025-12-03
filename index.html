@@ -17,6 +17,8 @@
             background-color: #ffffff;
             color: #333;
             line-height: 1.6;
+            padding-top: 100px;
+            padding-bottom: 40px;
         }
 
         .container {
@@ -27,9 +29,15 @@
 
         /* Header */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             background-color: #ffffff;
             padding: 20px 0;
             border-bottom: 1px solid #e0e0e0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -82,7 +90,7 @@
         .privacy-modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
@@ -160,21 +168,22 @@
 
         /* Main Content */
         .main-content {
-            padding: 40px 0;
+            padding: 20px 0 60px 0;
         }
 
         .page-title {
             text-align: center;
             color: #c8102e;
             font-size: 32px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            margin-top: 0;
         }
 
         .page-subtitle {
             text-align: center;
             color: #666;
             font-size: 18px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         /* Formularios */
@@ -332,6 +341,45 @@
         .form-group.error .error-message {
             display: block;
         }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 8px 0;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .footer-content p {
+            margin: 0;
+        }
+
+        .footer-content a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .footer-content a:visited,
+        .footer-content a:hover,
+        .footer-content a:active,
+        .footer-content a:focus {
+            color: #666;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -446,6 +494,13 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 <a href="https://www.cajapioxii.coop/" target="_blank" rel="noopener noreferrer">Caja Popular Pío</a></p>
+        </div>
+    </footer>
 
     <script>
         // URL del aviso de privacidad (debe ser proporcionado por el Socio)
