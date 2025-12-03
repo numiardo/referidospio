@@ -468,12 +468,12 @@
                         <div class="form-group">
                             <label for="referreeName">Nombre <span class="required-asterisk">*</span></label>
                             <input type="text" id="referreeName" name="referreeName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
                         </div>
                         <div class="form-group">
                             <label for="referreeLastName">Apellidos <span class="required-asterisk">*</span></label>
                             <input type="text" id="referreeLastName" name="referreeLastName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
                         </div>
                         <div class="form-group">
                             <label for="referreeEmail">Email <span class="required-asterisk">*</span></label>
@@ -497,12 +497,12 @@
                         <div class="form-group">
                             <label for="referrerName">Nombre <span class="required-asterisk">*</span></label>
                             <input type="text" id="referrerName" name="referrerName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
                         </div>
                         <div class="form-group">
                             <label for="referrerLastName">Apellidos <span class="required-asterisk">*</span></label>
                             <input type="text" id="referrerLastName" name="referrerLastName" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
                         </div>
                         <div class="form-group">
                             <label for="referrerClientNumber">Número de Socio <span style="font-size: 12px; color: #666; font-weight: normal;">(11 dígitos)</span></label>
@@ -599,6 +599,71 @@
                     }
                 });
             });
+
+            // Validar campos de nombre y apellidos (solo letras con acentos, ñ, ü)
+            const nameInputs = document.querySelectorAll('input#referreeName, input#referreeLastName, input#referrerName, input#referrerLastName');
+            nameInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    // Solo permitir letras (incluyendo acentos, ñ, ü)
+                    // Regex: permite letras mayúsculas y minúsculas con acentos, ñ, ü, espacios
+                    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');
+                    if (this.classList.contains('error')) {
+                        validateField(this);
+                    }
+                });
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+            });
+        }
+
+        // Validar nombre o apellido (mínimo 4 letras, solo letras con acentos, ñ, ü)
+        function validateName(name, isRequired = true) {
+            if (!name || name.trim() === '') {
+                if (isRequired) {
+                    return { isValid: false, message: 'Este campo es obligatorio' };
+                }
+                return { isValid: true, message: '' };
+            }
+
+            const trimmed = name.trim();
+            
+            // Verificar que solo contenga letras (con acentos, ñ, ü) y espacios
+            const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+            if (!nameRegex.test(trimmed)) {
+                return { isValid: false, message: 'Solo se permiten letras (con acentos, ñ, ü) y espacios' };
+            }
+
+            // Verificar que tenga al menos 4 letras (sin contar espacios)
+            const lettersOnly = trimmed.replace(/\s/g, '');
+            if (lettersOnly.length < 4) {
+                return { isValid: false, message: 'Debe tener al menos 4 letras' };
+            }
+
+            return { isValid: true, message: '' };
+        }
+
+        // Validar email (formato: xxx@xxx.xx)
+        function validateEmail(email, isRequired = true) {
+            if (!email || email.trim() === '') {
+                if (isRequired) {
+                    return { isValid: false, message: 'Este campo es obligatorio' };
+                }
+                return { isValid: true, message: '' };
+            }
+
+            const trimmed = email.trim();
+            
+            // Regex más estricta para validar formato de email: xxx@xxx.xx
+            // Permite: letras, números, puntos, guiones, guiones bajos antes del @
+            // Requiere: @ seguido de dominio con al menos un punto y extensión de al menos 2 caracteres
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            if (!emailRegex.test(trimmed)) {
+                return { isValid: false, message: 'Ingresa un email válido (ejemplo: nombre@dominio.com)' };
+            }
+
+            return { isValid: true, message: '' };
         }
 
         // Validar si un número es consecutivo (todos los dígitos iguales)
@@ -670,8 +735,16 @@
             let isValid = true;
             let errorMsg = '';
 
+            // Validar campos de nombre y apellidos
+            if (field.id === 'referreeName' || field.id === 'referreeLastName' || 
+                field.id === 'referrerName' || field.id === 'referrerLastName') {
+                const isRequired = field.hasAttribute('required');
+                const nameValidation = validateName(field.value, isRequired);
+                isValid = nameValidation.isValid;
+                errorMsg = nameValidation.message;
+            }
             // Validar campos de teléfono
-            if (field.type === 'tel') {
+            else if (field.type === 'tel') {
                 const isRequired = field.hasAttribute('required');
                 const phoneValidation = validatePhone(field.value, isRequired);
                 isValid = phoneValidation.isValid;
@@ -688,35 +761,26 @@
                     isValid = true; // Campo vacío es válido porque es opcional
                 }
             }
+            // Validar campos de email
+            else if (field.type === 'email') {
+                const isRequired = field.hasAttribute('required');
+                const emailValidation = validateEmail(field.value, isRequired);
+                isValid = emailValidation.isValid;
+                errorMsg = emailValidation.message;
+            }
             // Validar otros campos
             else {
                 // Solo validar si el campo es requerido
                 if (!field.hasAttribute('required')) {
                     // Si no es requerido, solo validar formato si tiene contenido
                     if (field.value.trim() !== '') {
-                        // Validar email si tiene contenido
-                        if (field.type === 'email') {
-                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                            if (!emailRegex.test(field.value)) {
-                                isValid = false;
-                                errorMsg = 'Ingresa un email válido';
-                            }
-                        }
+                        // Otros campos opcionales pueden tener validaciones aquí
                     }
                 } else {
                     // Validar campo vacío si es requerido
                     if (field.value.trim() === '') {
                         isValid = false;
                         errorMsg = 'Este campo es obligatorio';
-                    }
-
-                    // Validar email si es requerido y tiene contenido
-                    if (field.type === 'email' && field.value.trim() !== '') {
-                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (!emailRegex.test(field.value)) {
-                            isValid = false;
-                            errorMsg = 'Ingresa un email válido';
-                        }
                     }
                 }
             }
