@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referidos - Caja Popular Pío XII</title>
+    <link rel="icon" type="image/png" href="assets/PioFavicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #ffffff;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            color: #c8102e;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .logo-text p {
+            color: #333;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        /* Modal de Privacidad */
+        .privacy-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .privacy-modal.active {
+            display: flex;
+        }
+
+        .privacy-modal-content {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .privacy-modal-content h2 {
+            color: #c8102e;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .privacy-modal-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .privacy-link {
+            color: #0066cc;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        .privacy-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #c8102e;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #a00d25;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #c8102e;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        /* Formularios */
+        .form-container {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-section-title {
+            color: #c8102e;
+            font-size: 24px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c8102e;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"] {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #c8102e;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-continue {
+            background-color: #c8102e;
+            color: #ffffff;
+            padding: 15px 50px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-continue:hover {
+            background-color: #a00d25;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(200, 16, 46, 0.3);
+        }
+
+        .btn-continue:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* WhatsApp Icon */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #20ba5a;
+            transform: scale(1.1);
+        }
+
+        .whatsapp-float svg {
+            width: 35px;
+            height: 35px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .privacy-modal-content {
+                padding: 25px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+        }
+
+        .error-message {
+            color: #c8102e;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.error input {
+            border-color: #c8102e;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal de Aviso de Privacidad -->
+    <div id="privacyModal" class="privacy-modal active">
+        <div class="privacy-modal-content">
+            <h2>Aviso de Privacidad</h2>
+            <p>
+                Para continuar, es necesario que aceptes nuestro Aviso de Privacidad. 
+                Al hacer clic en "Aceptar", confirmas que has leído y aceptas los términos.
+            </p>
+            <p>
+                Puedes consultar nuestro Aviso de Privacidad completo en el siguiente enlace:
+            </p>
+            <p>
+                <a href="#" id="privacyLink" class="privacy-link" target="_blank">URL del Aviso de Privacidad</a>
+            </p>
+            <div class="privacy-buttons">
+                <button class="btn btn-secondary" onclick="rejectPrivacy()">Rechazar</button>
+                <button class="btn btn-primary" onclick="acceptPrivacy()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="https://www.cajapioxii.coop/" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/pio.png" alt="Pío XII Logo">
+                    <div class="logo-text">
+                        <h1>Pío XII</h1>
+                        <p>UNISAP COOPERATIVAS FINANCIERAS</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <h1 class="page-title">Sistema de Referidos</h1>
+            <p class="page-subtitle">Invita a tus conocidos a abrir una cuenta y recibe beneficios exclusivos</p>
+
+            <!-- Formulario de Datos del Referido -->
+            <div class="form-container">
+                <h2 class="form-section-title">Datos del Referido</h2>
+                <form id="referreeForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="referreeName">Nombre *</label>
+                            <input type="text" id="referreeName" name="referreeName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreeLastName">Apellidos *</label>
+                            <input type="text" id="referreeLastName" name="referreeLastName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreeEmail">Email *</label>
+                            <input type="email" id="referreeEmail" name="referreeEmail" required>
+                            <span class="error-message">Ingresa un email válido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referreePhone">Celular *</label>
+                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="Ej: 55629150285" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Formulario de Datos del Referidor -->
+            <div class="form-container">
+                <h2 class="form-section-title">Datos del Referidor</h2>
+                <form id="referrerForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="referrerName">Nombre *</label>
+                            <input type="text" id="referrerName" name="referrerName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referrerLastName">Apellidos *</label>
+                            <input type="text" id="referrerLastName" name="referrerLastName" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referrerClientNumber">Número de Socio *</label>
+                            <input type="text" id="referrerClientNumber" name="referrerClientNumber" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="referrerPhone">Celular *</label>
+                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="Ej: 55629150285" required>
+                            <span class="error-message">Este campo es obligatorio</span>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="referrerEmail">Email *</label>
+                            <input type="email" id="referrerEmail" name="referrerEmail" required>
+                            <span class="error-message">Ingresa un email válido</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Botón Continuar -->
+            <div class="form-actions">
+                <button id="continueBtn" class="btn-continue" onclick="handleContinue()">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL del aviso de privacidad (debe ser proporcionado por el Socio)
+        const PRIVACY_URL = '#'; // Reemplazar con el URL real del aviso de privacidad
+
+        // URL de citas
+        const APPOINTMENT_URL = 'https://citas.debmedia.com/#/company/Caja%20Popular%20Pio%20XII/branches';
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar el enlace de privacidad
+            document.getElementById('privacyLink').href = PRIVACY_URL;
+            document.getElementById('privacyLink').textContent = PRIVACY_URL !== '#' ? PRIVACY_URL : 'URL del Aviso de Privacidad';
+
+            // Validación en tiempo real
+            setupValidation();
+        });
+
+        // Aceptar privacidad
+        function acceptPrivacy() {
+            document.getElementById('privacyModal').classList.remove('active');
+            localStorage.setItem('privacyAccepted', 'true');
+        }
+
+        // Rechazar privacidad
+        function rejectPrivacy() {
+            alert('Para continuar es necesario aceptar el Aviso de Privacidad.');
+        }
+
+        // Verificar si ya se aceptó la privacidad
+        if (localStorage.getItem('privacyAccepted') === 'true') {
+            document.getElementById('privacyModal').classList.remove('active');
+        }
+
+        // Configurar validación
+        function setupValidation() {
+            const inputs = document.querySelectorAll('input[required]');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('error')) {
+                        validateField(this);
+                    }
+                });
+            });
+        }
+
+        // Validar campo individual
+        function validateField(field) {
+            const formGroup = field.closest('.form-group');
+            const errorMessage = formGroup.querySelector('.error-message');
+            let isValid = true;
+
+            // Validar campo vacío
+            if (field.value.trim() === '') {
+                isValid = false;
+            }
+
+            // Validar email
+            if (field.type === 'email' && field.value.trim() !== '') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(field.value)) {
+                    isValid = false;
+                }
+            }
+
+            // Aplicar estilos de error
+            if (isValid) {
+                formGroup.classList.remove('error');
+            } else {
+                formGroup.classList.add('error');
+            }
+
+            return isValid;
+        }
+
+        // Validar todos los formularios
+        function validateForms() {
+            const referreeForm = document.getElementById('referreeForm');
+            const referrerForm = document.getElementById('referrerForm');
+            let isValid = true;
+
+            // Validar formulario del referido
+            const referreeInputs = referreeForm.querySelectorAll('input[required]');
+            referreeInputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+
+            // Validar formulario del referidor
+            const referrerInputs = referrerForm.querySelectorAll('input[required]');
+            referrerInputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        // Formatear número de teléfono para WhatsApp
+        function formatPhoneNumber(phone) {
+            // Remover espacios, guiones y paréntesis
+            let cleaned = phone.replace(/\s|-|\(|\)/g, '');
+            
+            // Si no empieza con 52, agregarlo
+            if (!cleaned.startsWith('52')) {
+                cleaned = '52' + cleaned;
+            }
+            
+            return cleaned;
+        }
+
+        // Manejar el botón continuar
+        function handleContinue() {
+            // Validar formularios
+            if (!validateForms()) {
+                alert('Por favor, completa todos los campos requeridos correctamente.');
+                return;
+            }
+
+            // Obtener datos del referido
+            const referreeName = document.getElementById('referreeName').value.trim();
+            const referreeLastName = document.getElementById('referreeLastName').value.trim();
+            const referreePhone = document.getElementById('referreePhone').value.trim();
+            const referrerPhone = document.getElementById('referrerPhone').value.trim();
+
+            // Formatear número del referido
+            const formattedReferreePhone = formatPhoneNumber(referreePhone);
+            
+            // Crear mensaje personalizado
+            const fullReferreeName = `${referreeName} ${referreeLastName}`;
+            const message = `Hola ${referreeName}, te quiero invitar a abrir una cuenta con Caja Popular Pío, recibe una promoción exclusiva al registrar tu cita desde el siguiente enlace: ${APPOINTMENT_URL}`;
+            
+            // Codificar el mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Crear URL de WhatsApp con el número del referido
+            const whatsappUrl = `https://wa.me/${formattedReferreePhone}?text=${encodedMessage}`;
+            
+            // Abrir WhatsApp en nueva ventana
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
