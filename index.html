@@ -227,6 +227,41 @@
             font-size: 14px;
         }
 
+        .required-asterisk {
+            color: #c8102e;
+            margin-left: 3px;
+            cursor: help;
+            position: relative;
+        }
+
+        .required-asterisk:hover::after {
+            content: 'Dato obligatorio';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            margin-bottom: 5px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .required-asterisk:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 95%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            z-index: 1000;
+        }
+
         input[type="text"],
         input[type="email"],
         input[type="tel"],
@@ -446,9 +481,9 @@
                             <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group">
-                            <label for="referreePhone">Celular</label>
-                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396">
-                            <span class="error-message">Ingresa un email válido</span>
+                            <label for="referreePhone">Celular <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
+                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric">
+                            <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
                         </div>
                     </div>
                 </form>
@@ -470,14 +505,14 @@
                             <span class="error-message">Ingresa un email válido</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerClientNumber">Número de Socio *</label>
-                            <input type="text" id="referrerClientNumber" name="referrerClientNumber" required>
-                            <span class="error-message">Este campo es obligatorio</span>
+                            <label for="referrerClientNumber">Número de Socio <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(11 dígitos)</span></label>
+                            <input type="text" id="referrerClientNumber" name="referrerClientNumber" required pattern="[0-9]*" inputmode="numeric">
+                            <span class="error-message">El número de socio debe tener exactamente 11 dígitos y no puede ser un número consecutivo</span>
                         </div>
                         <div class="form-group">
-                            <label for="referrerPhone">Celular</label>
-                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396">
-                            <span class="error-message">Ingresa un email válido</span>
+                            <label for="referrerPhone">Celular <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
+                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric">
+                            <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
                         </div>
                         <div class="form-group full-width">
                             <label for="referrerEmail">Email</label>
@@ -537,8 +572,9 @@
 
         // Configurar validación
         function setupValidation() {
-            const inputs = document.querySelectorAll('input[required]');
-            inputs.forEach(input => {
+            // Validar campos requeridos
+            const requiredInputs = document.querySelectorAll('input[required]');
+            requiredInputs.forEach(input => {
                 input.addEventListener('blur', function() {
                     validateField(this);
                 });
@@ -548,6 +584,80 @@
                     }
                 });
             });
+
+            // Validar campos de teléfono y número de socio (aunque sean opcionales)
+            const phoneInputs = document.querySelectorAll('input[type="tel"], input#referrerClientNumber');
+            phoneInputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                input.addEventListener('input', function() {
+                    // Solo permitir números
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    if (this.classList.contains('error')) {
+                        validateField(this);
+                    }
+                });
+            });
+        }
+
+        // Validar si un número es consecutivo (todos los dígitos iguales)
+        function isConsecutiveNumber(value) {
+            if (value.length === 0) return false;
+            const firstDigit = value[0];
+            return value.split('').every(digit => digit === firstDigit);
+        }
+
+        // Validar celular (10 dígitos, no consecutivos)
+        function validatePhone(phone) {
+            if (!phone || phone.trim() === '') {
+                return { isValid: true, message: '' }; // Opcional, no validar si está vacío
+            }
+            
+            const cleaned = phone.replace(/\s|-|\(|\)/g, '');
+            
+            // Solo números
+            if (!/^\d+$/.test(cleaned)) {
+                return { isValid: false, message: 'El celular solo puede contener números' };
+            }
+            
+            // Exactamente 10 dígitos
+            if (cleaned.length !== 10) {
+                return { isValid: false, message: 'El celular debe tener exactamente 10 dígitos' };
+            }
+            
+            // No consecutivos
+            if (isConsecutiveNumber(cleaned)) {
+                return { isValid: false, message: 'El celular no puede ser un número consecutivo (ej: 6666666666)' };
+            }
+            
+            return { isValid: true, message: '' };
+        }
+
+        // Validar número de socio (11 dígitos, no consecutivos)
+        function validateClientNumber(clientNumber) {
+            if (!clientNumber || clientNumber.trim() === '') {
+                return { isValid: false, message: 'Este campo es obligatorio' }; // Requerido
+            }
+            
+            const cleaned = clientNumber.replace(/\s|-|\(|\)/g, '');
+            
+            // Solo números
+            if (!/^\d+$/.test(cleaned)) {
+                return { isValid: false, message: 'El número de socio solo puede contener números' };
+            }
+            
+            // Exactamente 11 dígitos
+            if (cleaned.length !== 11) {
+                return { isValid: false, message: 'El número de socio debe tener exactamente 11 dígitos' };
+            }
+            
+            // No consecutivos
+            if (isConsecutiveNumber(cleaned)) {
+                return { isValid: false, message: 'El número de socio no puede ser un número consecutivo (ej: 88888888888)' };
+            }
+            
+            return { isValid: true, message: '' };
         }
 
         // Validar campo individual
@@ -555,32 +665,56 @@
             const formGroup = field.closest('.form-group');
             const errorMessage = formGroup.querySelector('.error-message');
             let isValid = true;
+            let errorMsg = '';
 
-            // Solo validar si el campo es requerido
-            if (!field.hasAttribute('required')) {
-                // Si no es requerido, solo validar formato si tiene contenido
-                if (field.value.trim() !== '') {
-                    // Validar email si tiene contenido
-                    if (field.type === 'email') {
+            // Validar campos de teléfono
+            if (field.type === 'tel') {
+                const phoneValidation = validatePhone(field.value);
+                isValid = phoneValidation.isValid;
+                errorMsg = phoneValidation.message;
+            }
+            // Validar número de socio
+            else if (field.id === 'referrerClientNumber') {
+                const clientValidation = validateClientNumber(field.value);
+                isValid = clientValidation.isValid;
+                errorMsg = clientValidation.message;
+            }
+            // Validar otros campos
+            else {
+                // Solo validar si el campo es requerido
+                if (!field.hasAttribute('required')) {
+                    // Si no es requerido, solo validar formato si tiene contenido
+                    if (field.value.trim() !== '') {
+                        // Validar email si tiene contenido
+                        if (field.type === 'email') {
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            if (!emailRegex.test(field.value)) {
+                                isValid = false;
+                                errorMsg = 'Ingresa un email válido';
+                            }
+                        }
+                    }
+                } else {
+                    // Validar campo vacío si es requerido
+                    if (field.value.trim() === '') {
+                        isValid = false;
+                        errorMsg = 'Este campo es obligatorio';
+                    }
+
+                    // Validar email si es requerido y tiene contenido
+                    if (field.type === 'email' && field.value.trim() !== '') {
                         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                         if (!emailRegex.test(field.value)) {
                             isValid = false;
+                            errorMsg = 'Ingresa un email válido';
                         }
                     }
                 }
-            } else {
-                // Validar campo vacío si es requerido
-                if (field.value.trim() === '') {
-                    isValid = false;
-                }
+            }
 
-                // Validar email si es requerido y tiene contenido
-                if (field.type === 'email' && field.value.trim() !== '') {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(field.value)) {
-                        isValid = false;
-                    }
-                }
+            // Actualizar mensaje de error
+            if (errorMsg && errorMessage) {
+                errorMessage.textContent = errorMsg;
             }
 
             // Aplicar estilos de error
@@ -599,16 +733,16 @@
             const referrerForm = document.getElementById('referrerForm');
             let isValid = true;
 
-            // Validar formulario del referido
-            const referreeInputs = referreeForm.querySelectorAll('input[required]');
+            // Validar formulario del referido (todos los campos, incluyendo opcionales)
+            const referreeInputs = referreeForm.querySelectorAll('input');
             referreeInputs.forEach(input => {
                 if (!validateField(input)) {
                     isValid = false;
                 }
             });
 
-            // Validar formulario del referidor
-            const referrerInputs = referrerForm.querySelectorAll('input[required]');
+            // Validar formulario del referidor (todos los campos, incluyendo opcionales)
+            const referrerInputs = referrerForm.querySelectorAll('input');
             referrerInputs.forEach(input => {
                 if (!validateField(input)) {
                     isValid = false;
@@ -635,7 +769,7 @@
         function handleContinue() {
             // Validar formularios (solo el número de socio es requerido)
             if (!validateForms()) {
-                alert('Por favor, completa el campo de Número de Socio.');
+                alert('Por favor, completa el campo de Número de Socio correctamente.');
                 return;
             }
 
@@ -653,6 +787,14 @@
             // Si no hay teléfono, no se puede enviar WhatsApp
             if (!referreePhone) {
                 alert('Por favor, ingresa el celular del referido para enviar el mensaje por WhatsApp.');
+                return;
+            }
+
+            // Validar formato del celular del referido
+            const phoneValidation = validatePhone(referreePhone);
+            if (!phoneValidation.isValid) {
+                alert('Por favor, corrige el celular del referido: ' + phoneValidation.message);
+                document.getElementById('referreePhone').focus();
                 return;
             }
 
