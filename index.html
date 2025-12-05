@@ -166,6 +166,173 @@
             background-color: #5a6268;
         }
 
+        /* Modal de Resumen */
+        .summary-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .summary-modal.active {
+            display: flex;
+        }
+
+        .summary-modal-content {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .summary-modal-close:hover {
+            background-color: #f0f0f0;
+            color: #c8102e;
+        }
+
+        .summary-modal-content h2 {
+            color: #c8102e;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-align: center;
+            padding-right: 40px;
+        }
+
+        .summary-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .summary-section {
+            padding: 0;
+        }
+
+        .summary-section-title {
+            color: #c8102e;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #c8102e;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .summary-tooltip {
+            color: #0066cc;
+            cursor: help;
+            position: relative;
+            font-size: 14px;
+            font-weight: normal;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #e8f4f8;
+            border: 1px solid #0066cc;
+        }
+
+        .summary-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: normal;
+            width: 250px;
+            margin-bottom: 8px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            line-height: 1.4;
+        }
+
+        .summary-tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 95%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            z-index: 1000;
+        }
+
+        .summary-item {
+            display: flex;
+            margin-bottom: 8px;
+            padding: 4px 0;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #333;
+            min-width: 100px;
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .summary-value {
+            color: #666;
+            flex: 1;
+            word-break: break-word;
+            font-size: 14px;
+        }
+
+        .summary-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .summary-content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .summary-modal-content {
+                padding: 25px;
+            }
+        }
+
         /* Main Content */
         .main-content {
             padding: 20px 0 60px 0;
@@ -202,6 +369,55 @@
             margin-bottom: 25px;
             padding-bottom: 10px;
             border-bottom: 2px solid #c8102e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-tooltip {
+            color: #0066cc;
+            cursor: help;
+            position: relative;
+            font-size: 16px;
+            font-weight: normal;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #e8f4f8;
+            border: 1px solid #0066cc;
+        }
+
+        .form-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: normal;
+            width: 250px;
+            margin-bottom: 8px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            line-height: 1.4;
+        }
+
+        .form-tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 95%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            z-index: 1000;
         }
 
         .form-grid {
@@ -285,6 +501,34 @@
             display: flex;
             justify-content: center;
             margin-top: 30px;
+            gap: 15px;
+        }
+
+        /* Steps */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: #ffffff;
+            padding: 15px 50px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
         }
 
         .btn-continue {
@@ -439,6 +683,74 @@
         </div>
     </div>
 
+    <!-- Modal de Resumen -->
+    <div id="summaryModal" class="summary-modal">
+        <div class="summary-modal-content">
+            <button class="summary-modal-close" onclick="closeSummaryModal()" aria-label="Cerrar">&times;</button>
+            <h2>Resumen de Datos</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px; font-size: 14px;">Por favor, verifica que todos los datos sean correctos antes de continuar.</p>
+            
+            <div class="summary-content-grid">
+                <div class="summary-section">
+                    <div class="summary-section-title">
+                        Datos del Referido
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Nombre:</div>
+                        <div class="summary-value" id="summaryReferreeName">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Apellidos:</div>
+                        <div class="summary-value" id="summaryReferreeLastName">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Email:</div>
+                        <div class="summary-value" id="summaryReferreeEmail">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Celular:</div>
+                        <div class="summary-value" id="summaryReferreePhone">-</div>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <div class="summary-section-title">
+                        Datos del Referidor
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Nombre:</div>
+                        <div class="summary-value" id="summaryReferrerName">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Apellidos:</div>
+                        <div class="summary-value" id="summaryReferrerLastName">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Número de Socio:</div>
+                        <div class="summary-value" id="summaryReferrerClientNumber">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Celular:</div>
+                        <div class="summary-value" id="summaryReferrerPhone">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Email:</div>
+                        <div class="summary-value" id="summaryReferrerEmail">-</div>
+                    </div>
+                    <div class="summary-item" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0;">
+                        <div class="summary-label" style="font-weight: 700; color: #c8102e;">Código de Referidor:</div>
+                        <div class="summary-value" id="summaryReferrerCode" style="font-weight: 700; color: #c8102e; font-size: 16px;">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-buttons">
+                <button class="btn btn-secondary" onclick="closeSummaryModal()">Corregir</button>
+                <button class="btn btn-primary" onclick="confirmAndContinue()">Confirmar y Continuar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="header-content">
@@ -460,72 +772,86 @@
             <h1 class="page-title">Sistema de Referidos</h1>
             <p class="page-subtitle">Invita a tus conocidos a abrir una cuenta y recibe beneficios exclusivos</p>
 
-            <!-- Formulario de Datos del Referido -->
-            <div class="form-container">
-                <h2 class="form-section-title">Datos del Referido</h2>
-                <form id="referreeForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="referreeName">Nombre <span class="required-asterisk">*</span></label>
-                            <input type="text" id="referreeName" name="referreeName" required>
-                            <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
+            <!-- Step 1: Formulario de Datos del Referido -->
+            <div class="form-step active" id="step1">
+                <div class="form-container">
+                    <h2 class="form-section-title">
+                        Datos del Referido
+                        <span class="form-tooltip" data-tooltip="Ingresa los datos de la persona a la que quieres invitar a abrir su cuenta.">?</span>
+                    </h2>
+                    <form id="referreeForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="referreeName">Nombre <span class="required-asterisk">*</span></label>
+                                <input type="text" id="referreeName" name="referreeName" required>
+                                <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="referreeLastName">Apellidos <span class="required-asterisk">*</span></label>
+                                <input type="text" id="referreeLastName" name="referreeLastName" required>
+                                <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="referreeEmail">Email <span class="required-asterisk">*</span></label>
+                                <input type="email" id="referreeEmail" name="referreeEmail" required>
+                                <span class="error-message">Ingresa un email válido</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="referreePhone">Celular <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
+                                <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric" required>
+                                <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="referreeLastName">Apellidos <span class="required-asterisk">*</span></label>
-                            <input type="text" id="referreeLastName" name="referreeLastName" required>
-                            <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referreeEmail">Email <span class="required-asterisk">*</span></label>
-                            <input type="email" id="referreeEmail" name="referreeEmail" required>
-                            <span class="error-message">Ingresa un email válido</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referreePhone">Celular <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
-                            <input type="tel" id="referreePhone" name="referreePhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric" required>
-                            <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <!-- Botón Continuar Step 1 -->
+                <div class="form-actions">
+                    <button id="continueStep1Btn" class="btn-continue" onclick="goToStep2()">Continuar</button>
+                </div>
             </div>
 
-            <!-- Formulario de Datos del Referidor -->
-            <div class="form-container">
-                <h2 class="form-section-title">Datos del Referidor</h2>
-                <form id="referrerForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="referrerName">Nombre <span class="required-asterisk">*</span></label>
-                            <input type="text" id="referrerName" name="referrerName" required>
-                            <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
+            <!-- Step 2: Formulario de Datos del Referidor -->
+            <div class="form-step" id="step2">
+                <div class="form-container">
+                    <h2 class="form-section-title">
+                        Datos del Referidor
+                        <span class="form-tooltip" data-tooltip="Ingresa los datos del socio que quiere realizar la invitación">?</span>
+                    </h2>
+                    <form id="referrerForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="referrerName">Nombre <span class="required-asterisk">*</span></label>
+                                <input type="text" id="referrerName" name="referrerName" required>
+                                <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="referrerLastName">Apellidos <span class="required-asterisk">*</span></label>
+                                <input type="text" id="referrerLastName" name="referrerLastName" required>
+                                <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="referrerClientNumber">Número de Socio <span style="font-size: 12px; color: #666; font-weight: normal;">(7 dígitos)</span></label>
+                                <input type="text" id="referrerClientNumber" name="referrerClientNumber" pattern="[0-9]*" inputmode="numeric">
+                                <span class="error-message">El número de socio debe tener exactamente 7 dígitos y no puede ser un número consecutivo</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="referrerPhone">Celular <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
+                                <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric" required>
+                                <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="referrerEmail">Email <span class="required-asterisk">*</span></label>
+                                <input type="email" id="referrerEmail" name="referrerEmail" required>
+                                <span class="error-message">Ingresa un email válido</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="referrerLastName">Apellidos <span class="required-asterisk">*</span></label>
-                            <input type="text" id="referrerLastName" name="referrerLastName" required>
-                            <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referrerClientNumber">Número de Socio <span style="font-size: 12px; color: #666; font-weight: normal;">(11 dígitos)</span></label>
-                            <input type="text" id="referrerClientNumber" name="referrerClientNumber" pattern="[0-9]*" inputmode="numeric">
-                            <span class="error-message">El número de socio debe tener exactamente 11 dígitos y no puede ser un número consecutivo</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="referrerPhone">Celular <span class="required-asterisk">*</span> <span style="font-size: 12px; color: #666; font-weight: normal;">(10 dígitos)</span></label>
-                            <input type="tel" id="referrerPhone" name="referrerPhone" placeholder="4949457396" pattern="[0-9]*" inputmode="numeric" required>
-                            <span class="error-message">El celular debe tener exactamente 10 dígitos y no puede ser un número consecutivo</span>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="referrerEmail">Email <span class="required-asterisk">*</span></label>
-                            <input type="email" id="referrerEmail" name="referrerEmail" required>
-                            <span class="error-message">Ingresa un email válido</span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Botón Continuar -->
-            <div class="form-actions">
-                <button id="continueBtn" class="btn-continue" onclick="handleContinue()">Continuar</button>
+                    </form>
+                </div>
+                <!-- Botones Step 2 -->
+                <div class="form-actions">
+                    <button id="backStep2Btn" class="btn-back" onclick="goToStep1()">Regresar</button>
+                    <button id="continueStep2Btn" class="btn-continue" onclick="handleContinue()">Continuar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -552,6 +878,16 @@
 
             // Validación en tiempo real
             setupValidation();
+
+            // Cerrar modal de resumen con tecla Esc
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' || event.keyCode === 27) {
+                    const summaryModal = document.getElementById('summaryModal');
+                    if (summaryModal && summaryModal.classList.contains('active')) {
+                        closeSummaryModal();
+                    }
+                }
+            });
         });
 
         // Aceptar privacidad
@@ -585,8 +921,8 @@
                 });
             });
 
-            // Validar campos de teléfono y número de socio (aunque sean opcionales)
-            const phoneInputs = document.querySelectorAll('input[type="tel"], input#referrerClientNumber');
+            // Validar campos de teléfono
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
             phoneInputs.forEach(input => {
                 input.addEventListener('blur', function() {
                     validateField(this);
@@ -599,6 +935,50 @@
                     }
                 });
             });
+
+            // Validar campo de número de socio con prefijo automático
+            const clientNumberInput = document.getElementById('referrerClientNumber');
+            if (clientNumberInput) {
+                // Al enfocar el campo, mostrar solo los 7 dígitos (sin prefijo) para edición
+                clientNumberInput.addEventListener('focus', function() {
+                    let value = this.value.replace(/[^0-9]/g, '');
+                    // Si tiene el prefijo "0113", removerlo para mostrar solo los 7 dígitos
+                    if (value.startsWith('0113') && value.length === 11) {
+                        this.value = value.substring(4);
+                    }
+                });
+                
+                clientNumberInput.addEventListener('input', function() {
+                    // Solo permitir números y limitar a 7 dígitos (sin el prefijo)
+                    let value = this.value.replace(/[^0-9]/g, '');
+                    // Si el valor incluye el prefijo "0113", removerlo para permitir solo los 7 dígitos
+                    if (value.startsWith('0113')) {
+                        value = value.substring(4);
+                    }
+                    // Limitar a 7 dígitos
+                    if (value.length > 7) {
+                        value = value.substring(0, 7);
+                    }
+                    this.value = value;
+                    
+                    if (this.classList.contains('error')) {
+                        validateField(this);
+                    }
+                });
+                
+                // Al salir del campo, agregar prefijo automáticamente si tiene 7 dígitos
+                clientNumberInput.addEventListener('blur', function() {
+                    let value = this.value.replace(/[^0-9]/g, '');
+                    // Si ya tiene el prefijo, mantenerlo
+                    if (value.startsWith('0113') && value.length === 11) {
+                        // Ya tiene el prefijo completo, mantenerlo
+                    } else if (value.length === 7) {
+                        // Tiene 7 dígitos, agregar el prefijo
+                        this.value = '0113' + value;
+                    }
+                    validateField(this);
+                });
+            }
 
             // Validar campos de nombre y apellidos (solo letras con acentos, ñ, ü)
             const nameInputs = document.querySelectorAll('input#referreeName, input#referreeLastName, input#referrerName, input#referrerLastName');
@@ -656,7 +1036,7 @@
             
             // Regex más estricta para validar formato de email: xxx@xxx.xx
             // Permite: letras, números, puntos, guiones, guiones bajos antes del @
-            // Requiere: @ seguido de dominio con al menos un punto y extensión de al menos 2 caracteres
+            // Resocio: @ seguido de dominio con al menos un punto y extensión de al menos 2 caracteres
             const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             
             if (!emailRegex.test(trimmed)) {
@@ -702,30 +1082,57 @@
             return { isValid: true, message: '' };
         }
 
-        // Validar número de socio (11 dígitos, no consecutivos)
+        // Validar número de socio (7 dígitos, no consecutivos)
         function validateClientNumber(clientNumber) {
             if (!clientNumber || clientNumber.trim() === '') {
                 return { isValid: true, message: '' }; // Opcional, no validar si está vacío
             }
             
-            const cleaned = clientNumber.replace(/\s|-|\(|\)/g, '');
+            let cleaned = clientNumber.replace(/\s|-|\(|\)/g, '');
+            
+            // Remover el prefijo "0113" si está presente para validar solo los 7 dígitos
+            if (cleaned.startsWith('0113')) {
+                cleaned = cleaned.substring(4);
+            }
             
             // Solo números
             if (!/^\d+$/.test(cleaned)) {
                 return { isValid: false, message: 'El número de socio solo puede contener números' };
             }
             
-            // Exactamente 11 dígitos
-            if (cleaned.length !== 11) {
-                return { isValid: false, message: 'El número de socio debe tener exactamente 11 dígitos' };
+            // Exactamente 7 dígitos (sin el prefijo)
+            if (cleaned.length !== 7) {
+                return { isValid: false, message: 'El número de socio debe tener exactamente 7 dígitos' };
             }
             
-            // No consecutivos
+            // No consecutivos (validar solo los 7 dígitos)
             if (isConsecutiveNumber(cleaned)) {
-                return { isValid: false, message: 'El número de socio no puede ser un número consecutivo (ej: 88888888888)' };
+                return { isValid: false, message: 'El número de socio no puede ser un número consecutivo (ej: 7777777)' };
             }
             
             return { isValid: true, message: '' };
+        }
+
+        // Obtener el número de socio completo con prefijo
+        function getFullClientNumber(clientNumber) {
+            if (!clientNumber || clientNumber.trim() === '') {
+                return '';
+            }
+            
+            let cleaned = clientNumber.replace(/\s|-|\(|\)/g, '');
+            
+            // Si ya tiene el prefijo, devolverlo tal cual
+            if (cleaned.startsWith('0113')) {
+                return cleaned;
+            }
+            
+            // Si tiene 7 dígitos, agregar el prefijo
+            if (cleaned.length === 7) {
+                return '0113' + cleaned;
+            }
+            
+            // Si no tiene 7 dígitos, devolver vacío o el valor original
+            return cleaned;
         }
 
         // Validar campo individual
@@ -800,13 +1207,11 @@
             return isValid;
         }
 
-        // Validar todos los formularios
-        function validateForms() {
+        // Validar formulario del referido
+        function validateReferreeForm() {
             const referreeForm = document.getElementById('referreeForm');
-            const referrerForm = document.getElementById('referrerForm');
             let isValid = true;
 
-            // Validar formulario del referido (todos los campos, incluyendo opcionales)
             const referreeInputs = referreeForm.querySelectorAll('input');
             referreeInputs.forEach(input => {
                 if (!validateField(input)) {
@@ -814,7 +1219,14 @@
                 }
             });
 
-            // Validar formulario del referidor (todos los campos, incluyendo opcionales)
+            return isValid;
+        }
+
+        // Validar formulario del referidor
+        function validateReferrerForm() {
+            const referrerForm = document.getElementById('referrerForm');
+            let isValid = true;
+
             const referrerInputs = referrerForm.querySelectorAll('input');
             referrerInputs.forEach(input => {
                 if (!validateField(input)) {
@@ -823,6 +1235,50 @@
             });
 
             return isValid;
+        }
+
+        // Validar todos los formularios
+        function validateForms() {
+            return validateReferreeForm() && validateReferrerForm();
+        }
+
+        // Navegar al Step 1
+        function goToStep1() {
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Navegar al Step 2
+        function goToStep2() {
+            // Validar formulario del referido antes de avanzar
+            if (!validateReferreeForm()) {
+                alert('Por favor, completa todos los campos obligatorios del referido correctamente.');
+                return;
+            }
+
+            // Cambiar al step 2
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Generar código de referidor aleatorio (dos letras - tres dígitos)
+        function generateReferrerCode() {
+            // Generar dos letras mayúsculas aleatorias
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let letterPart = '';
+            for (let i = 0; i < 2; i++) {
+                letterPart += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            
+            // Generar tres dígitos aleatorios
+            let digitPart = '';
+            for (let i = 0; i < 3; i++) {
+                digitPart += Math.floor(Math.random() * 10);
+            }
+            
+            return letterPart + digitPart;
         }
 
         // Formatear número de teléfono para WhatsApp
@@ -838,22 +1294,71 @@
             return cleaned;
         }
 
-        // Manejar el botón continuar
-        function handleContinue() {
-            // Validar formularios (todos los campos excepto número de socio son obligatorios)
-            if (!validateForms()) {
-                alert('Por favor, completa todos los campos obligatorios correctamente.');
-                return;
-            }
+        // Variable global para almacenar el código de referidor
+        let currentReferrerCode = '';
 
+        // Mostrar modal de resumen
+        function showSummaryModal() {
+            // Obtener datos del referido
+            const referreeName = document.getElementById('referreeName').value.trim();
+            const referreeLastName = document.getElementById('referreeLastName').value.trim();
+            const referreeEmail = document.getElementById('referreeEmail').value.trim();
+            const referreePhone = document.getElementById('referreePhone').value.trim();
+
+            // Obtener datos del referidor
+            const referrerName = document.getElementById('referrerName').value.trim();
+            const referrerLastName = document.getElementById('referrerLastName').value.trim();
+            let referrerClientNumber = document.getElementById('referrerClientNumber').value.trim();
+            const referrerPhone = document.getElementById('referrerPhone').value.trim();
+            const referrerEmail = document.getElementById('referrerEmail').value.trim();
+
+            // Obtener número de socio completo con prefijo
+            referrerClientNumber = getFullClientNumber(referrerClientNumber);
+
+            // Generar código de referidor
+            currentReferrerCode = generateReferrerCode();
+
+            // Mostrar datos en el resumen
+            document.getElementById('summaryReferreeName').textContent = referreeName || '-';
+            document.getElementById('summaryReferreeLastName').textContent = referreeLastName || '-';
+            document.getElementById('summaryReferreeEmail').textContent = referreeEmail || '-';
+            document.getElementById('summaryReferreePhone').textContent = referreePhone || '-';
+            
+            document.getElementById('summaryReferrerName').textContent = referrerName || '-';
+            document.getElementById('summaryReferrerLastName').textContent = referrerLastName || '-';
+            document.getElementById('summaryReferrerClientNumber').textContent = referrerClientNumber || 'No proporcionado';
+            document.getElementById('summaryReferrerPhone').textContent = referrerPhone || '-';
+            document.getElementById('summaryReferrerEmail').textContent = referrerEmail || '-';
+            document.getElementById('summaryReferrerCode').textContent = currentReferrerCode;
+
+            // Mostrar el modal
+            document.getElementById('summaryModal').classList.add('active');
+            
+            // Hacer scroll al inicio del modal
+            document.querySelector('.summary-modal-content').scrollTop = 0;
+        }
+
+        // Cerrar modal de resumen
+        function closeSummaryModal() {
+            document.getElementById('summaryModal').classList.remove('active');
+            // Asegurar que estamos en el step 2
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            // Hacer scroll al inicio de la página para que el usuario pueda ver los campos
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Confirmar y continuar con WhatsApp
+        function confirmAndContinue() {
             // Obtener datos del referido (obligatorios)
             const referreeName = document.getElementById('referreeName').value.trim();
             const referreePhone = document.getElementById('referreePhone').value.trim();
 
-            // Validar formato del celular del referido
+            // Validar formato del celular del referido (doble verificación)
             const phoneValidation = validatePhone(referreePhone, true);
             if (!phoneValidation.isValid) {
                 alert('Por favor, corrige el celular del referido: ' + phoneValidation.message);
+                closeSummaryModal();
                 document.getElementById('referreePhone').focus();
                 return;
             }
@@ -861,9 +1366,10 @@
             // Formatear número del referido
             const formattedReferreePhone = formatPhoneNumber(referreePhone);
             
-            // Crear mensaje personalizado (usar nombre si está disponible, sino usar "amigo")
+            // Crear mensaje personalizado con el código de referidor
             const nameToUse = referreeName || 'amigo';
-            const message = `Hola ${nameToUse}, te quiero invitar a abrir una cuenta con Caja Popular Pío, recibe una promoción exclusiva al registrar tu cita desde el siguiente enlace: ${APPOINTMENT_URL}`;
+            const referrerCode = currentReferrerCode || 'N/A';
+            const message = `Hola ${nameToUse}, te quiero invitar a abrir una cuenta con Caja Popular Pío, ambos recibirán una promoción exclusiva al registrar tu cita desde el siguiente enlace y no olvides colocar el número de referido ${referrerCode}: ${APPOINTMENT_URL}`;
             
             // Codificar el mensaje para URL
             const encodedMessage = encodeURIComponent(message);
@@ -871,8 +1377,23 @@
             // Crear URL de WhatsApp con el número del referido
             const whatsappUrl = `https://wa.me/${formattedReferreePhone}?text=${encodedMessage}`;
             
+            // Cerrar el modal
+            closeSummaryModal();
+            
             // Abrir WhatsApp en nueva ventana
             window.open(whatsappUrl, '_blank');
+        }
+
+        // Manejar el botón continuar (Step 2)
+        function handleContinue() {
+            // Validar formulario del referidor antes de mostrar el modal
+            if (!validateReferrerForm()) {
+                alert('Por favor, completa todos los campos obligatorios del referidor correctamente.');
+                return;
+            }
+
+            // Mostrar modal de resumen
+            showSummaryModal();
         }
     </script>
 </body>
