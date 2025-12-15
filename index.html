@@ -667,14 +667,8 @@
         <div class="privacy-modal-content">
             <h2>Aviso de Privacidad</h2>
             <p>
-                Para continuar, es necesario que aceptes nuestro Aviso de Privacidad. 
+                Para continuar, es necesario que aceptes nuestro <a href="#" id="privacyLink" class="privacy-link" target="_blank">Aviso de Privacidad</a>. 
                 Al hacer clic en "Aceptar", confirmas que has leído y aceptas los términos.
-            </p>
-            <p>
-                Puedes consultar nuestro Aviso de Privacidad completo en el siguiente enlace:
-            </p>
-            <p>
-                <a href="#" id="privacyLink" class="privacy-link" target="_blank">URL del Aviso de Privacidad</a>
             </p>
             <div class="privacy-buttons">
                 <button class="btn btn-secondary" onclick="rejectPrivacy()">Rechazar</button>
@@ -859,13 +853,13 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <p>&copy; 2025 <a href="https://www.cajapioxii.coop/" target="_blank" rel="noopener noreferrer">Caja Popular Pío</a></p>
+            <p>&copy; 2025 <a href="https://www.cajapioxii.coop/" target="_blank" rel="noopener noreferrer">Caja Popular Pío</a> | <a href="https://www.cajapioxii.coop/index.php/contacto/aviso-de-privacidad-caja-pio" target="_blank" rel="noopener noreferrer">Aviso de Privacidad</a></p>
         </div>
     </footer>
 
     <script>
         // URL del aviso de privacidad (debe ser proporcionado por el Socio)
-        const PRIVACY_URL = '#'; // Reemplazar con el URL real del aviso de privacidad
+        const PRIVACY_URL = 'https://www.cajapioxii.coop/index.php/contacto/aviso-de-privacidad-caja-pio';
 
         // URL de citas
         const APPOINTMENT_URL = 'https://citas.debmedia.com/#/company/Caja%20Popular%20Pio%20XII/branches';
@@ -874,7 +868,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Configurar el enlace de privacidad
             document.getElementById('privacyLink').href = PRIVACY_URL;
-            document.getElementById('privacyLink').textContent = PRIVACY_URL !== '#' ? PRIVACY_URL : 'URL del Aviso de Privacidad';
 
             // Validación en tiempo real
             setupValidation();
