@@ -687,7 +687,7 @@
             <div class="summary-content-grid">
                 <div class="summary-section">
                     <div class="summary-section-title">
-                        Datos del Referido
+                        Datos del Invitado
                     </div>
                     <div class="summary-item">
                         <div class="summary-label">Nombre:</div>
@@ -709,7 +709,7 @@
 
                 <div class="summary-section">
                     <div class="summary-section-title">
-                        Datos del Referidor
+                        Datos del Recomendador
                     </div>
                     <div class="summary-item">
                         <div class="summary-label">Nombre:</div>
@@ -770,7 +770,7 @@
             <div class="form-step active" id="step1">
                 <div class="form-container">
                     <h2 class="form-section-title">
-                        Datos del Referido
+                        Datos del Invitado
                         <span class="form-tooltip" data-tooltip="Ingresa los datos de la persona a la que quieres invitar a abrir su cuenta.">?</span>
                     </h2>
                     <form id="referreeForm">
@@ -778,16 +778,16 @@
                             <div class="form-group">
                                 <label for="referreeName">Nombre <span class="required-asterisk">*</span></label>
                                 <input type="text" id="referreeName" name="referreeName" required>
-                                <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
+                                <span class="error-message">El nombre debe tener al menos 2 letras y no puede contener números ni caracteres especiales</span>
                             </div>
                             <div class="form-group">
                                 <label for="referreeLastName">Apellidos <span class="required-asterisk">*</span></label>
                                 <input type="text" id="referreeLastName" name="referreeLastName" required>
-                                <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
+                                <span class="error-message">Los apellidos deben tener al menos 2 letras y no pueden contener números ni caracteres especiales</span>
                             </div>
                             <div class="form-group">
-                                <label for="referreeEmail">Email <span class="required-asterisk">*</span></label>
-                                <input type="email" id="referreeEmail" name="referreeEmail" required>
+                                <label for="referreeEmail">Email</label>
+                                <input type="email" id="referreeEmail" name="referreeEmail">
                                 <span class="error-message">Ingresa un email válido</span>
                             </div>
                             <div class="form-group">
@@ -808,7 +808,7 @@
             <div class="form-step" id="step2">
                 <div class="form-container">
                     <h2 class="form-section-title">
-                        Datos del Referidor
+                        Datos del Recomendador
                         <span class="form-tooltip" data-tooltip="Ingresa los datos del socio que quiere realizar la invitación">?</span>
                     </h2>
                     <form id="referrerForm">
@@ -816,12 +816,12 @@
                             <div class="form-group">
                                 <label for="referrerName">Nombre <span class="required-asterisk">*</span></label>
                                 <input type="text" id="referrerName" name="referrerName" required>
-                                <span class="error-message">El nombre debe tener al menos 4 letras y no puede contener números ni caracteres especiales</span>
+                                <span class="error-message">El nombre debe tener al menos 2 letras y no puede contener números ni caracteres especiales</span>
                             </div>
                             <div class="form-group">
                                 <label for="referrerLastName">Apellidos <span class="required-asterisk">*</span></label>
                                 <input type="text" id="referrerLastName" name="referrerLastName" required>
-                                <span class="error-message">Los apellidos deben tener al menos 4 letras y no pueden contener números ni caracteres especiales</span>
+                                <span class="error-message">Los apellidos deben tener al menos 2 letras y no pueden contener números ni caracteres especiales</span>
                             </div>
                             <div class="form-group">
                                 <label for="referrerClientNumber">Número de Socio <span style="font-size: 12px; color: #666; font-weight: normal;">(7 dígitos)</span></label>
@@ -921,8 +921,11 @@
                     validateField(this);
                 });
                 input.addEventListener('input', function() {
-                    // Solo permitir números
+                    // Solo permitir números y limitar a 10 dígitos
                     this.value = this.value.replace(/[^0-9]/g, '');
+                    if (this.value.length > 10) {
+                        this.value = this.value.substring(0, 10);
+                    }
                     if (this.classList.contains('error')) {
                         validateField(this);
                     }
@@ -1007,10 +1010,10 @@
                 return { isValid: false, message: 'Solo se permiten letras (con acentos, ñ, ü) y espacios' };
             }
 
-            // Verificar que tenga al menos 4 letras (sin contar espacios)
+            // Verificar que tenga al menos 2 letras (sin contar espacios)
             const lettersOnly = trimmed.replace(/\s/g, '');
-            if (lettersOnly.length < 4) {
-                return { isValid: false, message: 'Debe tener al menos 4 letras' };
+            if (lettersOnly.length < 2) {
+                return { isValid: false, message: 'Debe tener al menos 2 letras' };
             }
 
             return { isValid: true, message: '' };
