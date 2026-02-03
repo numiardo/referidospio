@@ -751,10 +751,6 @@
             <div class="logo">
                 <a href="https://www.cajapioxii.coop/" target="_blank" rel="noopener noreferrer">
                     <img src="assets/pio.png" alt="Pío XII Logo">
-                    <div class="logo-text">
-                        <h1>Pío XII</h1>
-                        <p>UNISAP COOPERATIVAS FINANCIERAS</p>
-                    </div>
                 </a>
             </div>
         </div>
@@ -1365,7 +1361,20 @@
             // Crear mensaje personalizado con el código de referidor
             const nameToUse = referreeName || 'amigo';
             const referrerCode = currentReferrerCode || 'N/A';
-            const message = `Hola ${nameToUse}, te quiero invitar a abrir una cuenta con Caja Popular Pío, ambos recibirán una promoción exclusiva al registrar tu cita desde el siguiente enlace y no olvides colocar el número de referido ${referrerCode}: ${APPOINTMENT_URL}`;
+            const message = `¡Hola, ${nameToUse}! Te quiero invitar a abrir tu cuenta en Caja Popular Pío XII.
+
+Al ser socio, gozarás de muchos beneficios como acceso a préstamos con tasas preferenciales, rendimientos en tus ahorros y promociones exclusivas.
+
+Registra tu cita desde el siguiente enlace y no olvides colocar el número de referido ${referrerCode}:
+${APPOINTMENT_URL}
+
+Para tu trámite, recuerda llevar:
+* Identificación oficial con fotografía.
+* CURP y Acta de nacimiento.
+* Comprobante de domicilio actual.
+* Acta de matrimonio (si aplica).
+* 2 fotografías tamaño infantil.
+¡Anímate, es una excelente oportunidad para tu ahorro!`;
             
             // Codificar el mensaje para URL
             const encodedMessage = encodeURIComponent(message);
